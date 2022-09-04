@@ -68,12 +68,12 @@ function! s:GodocView(newposition, position, content) abort
       if &encoding == "utf-8"
         let borderchars = ['─', '│', '─', '│', '┌', '┐', '┘', '└']
       endif
-      let winid = popup_atcursor(split(a:content, '\n'), {
-            \ 'padding': [1, 1, 1, 1],
-            \ 'borderchars': borderchars,
-            \ 'border': [1, 1, 1, 1],
-            \ })
-      call win_gotoid(winid)
+      "let winid = popup_atcursor(split(a:content, '\n'), {
+      "      \ 'padding': [1, 1, 1, 1],
+      "      \ 'borderchars': borderchars,
+      "      \ 'border': [1, 1, 1, 1],
+      "      \ })
+      "call win_gotoid(winid)
     elseif has('nvim') && exists('*nvim_open_win')
       let lines = split(a:content, '\n')
       let height = 0
