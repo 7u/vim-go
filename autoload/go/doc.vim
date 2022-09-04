@@ -58,6 +58,23 @@ function! go#doc#Open(newmode, mode, ...) abort
   call s:GodocView(a:newmode, a:mode, l:out)
 endfunction
 
+function s:popup_filter(winid, key) abort
+    if a:key ==# get(g:, 'lsp_popup_scroll_down', "\<c-j>")
+        call win_execute(a:winid, "normal! \<c-e>")
+    elseif a:key ==# get(g:, 'lsp_popup_scroll_up', "\<c-k>")
+        call win_execute(a:winid, "normal! \<c-y>")
+    elseif a:key ==# "\<c-g>"
+        call win_execute(a:winid, "normal! G")
+    elseif a:key ==# "\<c-t>"
+        call win_execute(a:winid, "normal! gg")
+    elseif a:key ==# 'q'
+        call popup_close(a:winid)
+    else
+        return v:false
+    endif
+    return v:true
+  endfunction
+
 function! s:GodocView(newposition, position, content) abort
   " popup window
   if go#config#DocPopupWindow()
@@ -68,12 +85,14 @@ function! s:GodocView(newposition, position, content) abort
       if &encoding == "utf-8"
         let borderchars = ['─', '│', '─', '│', '┌', '┐', '┘', '└']
       endif
-      let winid = popup_atcursor(split(a:content, '\n'), {
+      popup_atcursor(split(a:content, '\n'), {
             \ 'padding': [1, 1, 1, 1],
             \ 'borderchars': borderchars,
             \ 'border': [1, 1, 1, 1],
+            \ 'filter': funcref('s:popup_filter'),
+            \ 'filtermode': 'n',
+            \ 'mapping': v:false
             \ })
-      call win_gotoid(winid)
     elseif has('nvim') && exists('*nvim_open_win')
       let lines = split(a:content, '\n')
       let height = 0
