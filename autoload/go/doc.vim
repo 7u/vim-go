@@ -59,9 +59,9 @@ function! go#doc#Open(newmode, mode, ...) abort
 endfunction
 
 function s:popup_filter(winid, key) abort
-    if a:key ==# get(g:, 'lsp_popup_scroll_down', "\<c-j>")
+    if a:key ==# "\<c-j>"
         call win_execute(a:winid, "normal! \<c-e>")
-    elseif a:key ==# get(g:, 'lsp_popup_scroll_up', "\<c-k>")
+    elseif a:key ==# "\<c-k>"
         call win_execute(a:winid, "normal! \<c-y>")
     elseif a:key ==# "\<c-g>"
         call win_execute(a:winid, "normal! G")
